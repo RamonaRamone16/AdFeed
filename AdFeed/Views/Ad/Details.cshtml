@@ -8,7 +8,7 @@
     ViewData["Title"] = "Details";
 }
 
-@if (Model.Images.Count > 0 && Model.Images != null)
+@if (Model.Images != null && Model.Images.Count > 0)
 {
     foreach (var item in Model.Images)
     {
@@ -29,9 +29,18 @@
 <p>@Model.Category</p>
 <p>@Model.PhoneNumber</p>
 <p>@Model.Date</p>
-<hr /> 
 
-<div id="allComments"></div>
+
+@if (SignInManager.IsSignedIn(User) && Model.IsAdsAuthor)
+{
+    <button onclick="updateAd()" type="submit" class="btn btn-info" style="margin-top: 50px">Update</button>
+    <a asp-action="Update" asp-controller="Ad" asp-route-id="@Model.Id">
+        Изменить
+    </a>
+}
+<hr />
+
+<div id="allComments" class="mt-5"></div>
 
 @if (SignInManager.IsSignedIn(User))
 {
@@ -59,6 +68,26 @@
                 type: "POST",
                 data: {
                     content,
+                    adId
+                },
+                success: function(data) {
+                    console.log(data);
+                    callback();
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        const updateAd = (callback) => {
+            console.log("updateAd method")
+            const adId = @Model.Id;
+
+            $.ajax({
+                url: '@Url.Action("UpdateDate", "Ad")',
+                type: "POST",
+                data: {
                     adId
                 },
                 success: function(data) {

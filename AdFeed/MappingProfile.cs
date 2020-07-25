@@ -10,6 +10,7 @@ namespace AdFeed
         public MappingProfile()
         {
             AdCreateModelToAdMap();
+            AdToAdCreateModelMap();
             AdToAdModelMap();
             CommentToCommentModelMap();
             CommentCreateModelToCommentMap();
@@ -18,9 +19,16 @@ namespace AdFeed
         public void AdCreateModelToAdMap()
         {
             CreateMap<AdCreateModel, Ad>()
-                .ForMember(to => to.Date, from => from.MapFrom(p => DateTime.Now))
+                .ForMember(to => to.UpdatedOnDate, from => from.MapFrom(p => DateTime.Now))
                 .ForMember(target => target.Images,
                     src => src.Ignore()); 
+        }
+
+        public void AdToAdCreateModelMap()
+        {
+            CreateMap<Ad, AdCreateModel>()
+                .ForMember(target => target.Images,
+                    src => src.Ignore());
         }
 
         public void AdToAdModelMap()

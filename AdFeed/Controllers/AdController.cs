@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AdFeed.DAL.Entities;
 using AdFeed.Models;
 using AdFeed.Services.Ads;
+using AutoMapper.Configuration.Conventions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -61,11 +62,40 @@ namespace AdFeed.Controllers
         }
 
         [HttpGet]
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            AdModel model = _adService.GetAdById(id);
+            User user = await _userManager.GetUserAsync(User);
+            AdModel model = _adService.GetAdById(id, user.Id);
 
             return View(model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult UpdateDate(int adId)
+        {
+            _adService.UpdateAdDate(adId);
+
+            return Ok();
+        }
+
+        [HttpGet]
+        [Authorize]
+        public ActionResult Update(int id)
+        {
+            AdCreateModel model =_adService.GetAdForUpdate(id);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult> UpdateAd(AdCreateModel model)
+        {
+            User user = await _userManager.GetUserAsync(User);
+            _adService.UpdateAd(model, user.Id);
+
+            return RedirectToAction("Index", new AdCreateModel());
         }
     }
 }

@@ -9,6 +9,9 @@ namespace AdFeed.Services.Ads
         AdCreateModel GetAdCreateModel();
         void CreateAd(AdCreateModel model, int userId);
         List<AdModel> GetAdsByUserId(AdFilterModel model, int id);
-        AdModel GetAdById(int adId);
+        AdModel GetAdById(int adId, int userId);
+        void UpdateAdDate(int adId);
+        void UpdateAd(AdCreateModel model, int userId);
+        AdCreateModel GetAdForUpdate(int adId);
     }
 }

@@ -8,6 +8,8 @@ namespace AdFeed.Models
 {
     public class AdCreateModel
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "Поле Title не должно быть пустым")]
         public string Title { get; set; }
 

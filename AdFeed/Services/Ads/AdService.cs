@@ -32,6 +32,7 @@ namespace AdFeed.Services.Ads
                     .ByPriceFrom(model.PriceFrom)
                     .ByPriceTo(model.PriceTo)
                     .ByImages(model.OnlyWithImages)
+                    .OrderBy(x => x.UpdatedOnDate)
                     .ToList();
 
                 model.CategorySelect = GetCategorySelect();
@@ -50,6 +51,7 @@ namespace AdFeed.Services.Ads
                     .ByPriceFrom(model.PriceFrom)
                     .ByPriceTo(model.PriceTo)
                     .ByImages(model.OnlyWithImages)
+                    .OrderBy(x => x.UpdatedOnDate)
                     .ToList();
                 model.CategorySelect = GetCategorySelect();
 
@@ -57,12 +59,15 @@ namespace AdFeed.Services.Ads
             }
         }
 
-        public AdModel GetAdById(int adId)
+        public AdModel GetAdById(int adId, int userId)
         {
             using (var unitOfWork = _unitOfWorkFactory.Create())
             {
                 Ad ad = unitOfWork.Ads.GetAllWithCategoryAndImages().First(x => x.Id == adId);
-                return Mapper.Map<AdModel>(ad);
+                AdModel model = Mapper.Map<AdModel>(ad);
+                model.IsAdsAuthor = userId == ad.AuthorId ? true : false;
+
+                return model;
             }
         }
 
@@ -72,9 +77,10 @@ namespace AdFeed.Services.Ads
             {
                 Ad ad = Mapper.Map<Ad>(model);
                 ad.AuthorId = userId;
+                ad.CreatedOnDate = DateTime.Now;
                 unitOfWork.Ads.Create(ad);
 
-                if (model.Images.Count > 0)
+                if (model.Images != null && model.Images.Count > 0)
                 {
                     int adId = unitOfWork.Ads.GetAll().Last().Id;
 
@@ -96,11 +102,63 @@ namespace AdFeed.Services.Ads
         {
             using (var unitOfWork = _unitOfWorkFactory.Create())
             {
-                List<Category> categories = unitOfWork.Categories.GetAll().ToList();
                 return new AdCreateModel()
-                { 
-                    CategorySelect = new SelectList(categories, nameof(Category.Id), nameof(Category.Name))
+                {
+                    CategorySelect = GetCategorySelect()
                 };
+            }
+        }
+
+        public void UpdateAdDate(int adId)
+        {
+            using (var unitOfWork = _unitOfWorkFactory.Create())
+            {
+                Ad ad = unitOfWork.Ads.GetById(adId);
+                ad.UpdatedOnDate = DateTime.Now;
+                unitOfWork.Ads.Update(ad);
+            }
+        }
+
+        public void UpdateAd(AdCreateModel model, int userId)
+        {
+            using (var unitOfWork = _unitOfWorkFactory.Create())
+            {
+                Ad ad = Mapper.Map<Ad>(model);
+                ad.AuthorId = userId;
+
+                List<Image> images = unitOfWork.Images.GetAll().Where(x => x.AdId == ad.Id).ToList();
+                if (images != null)
+                {
+                    foreach (var image in images)
+                        unitOfWork.Images.Remove(image);
+                }
+
+                if (model.Images!= null && model.Images.Count > 0)
+                {
+                    int adId = unitOfWork.Ads.GetAll().Last().Id;
+
+                    for (int i = 0; i < model.Images.Count; i++)
+                    {
+                        var image = new Image()
+                        {
+                            AdId = adId,
+                            Picture = GetImageBytes(model.Images[i]),
+                            Main = i == 0 ? true : false
+                        };
+                        unitOfWork.Images.Create(image);
+                    }
+                }
+                unitOfWork.Ads.Update(ad);
+            }
+        }
+
+        public AdCreateModel GetAdForUpdate(int adId)
+        {
+            using (var unitOfWork = _unitOfWorkFactory.Create())
+            {
+                AdCreateModel ad = Mapper.Map<AdCreateModel>(unitOfWork.Ads.GetAllWithCategoryAndImages().First(x => x.Id == adId));
+                ad.CategorySelect = GetCategorySelect();
+                return ad;
             }
         }
 

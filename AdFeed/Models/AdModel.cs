@@ -13,6 +13,7 @@ namespace AdFeed.Models
         public string Category { get; set; }
         public decimal Price { get; set; }
         public DateTime Date { get; set; }
+        public bool IsAdsAuthor { get; set; }
         public List<Image> Images { get; set; }
     }
 }
