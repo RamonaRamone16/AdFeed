@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdFeed", "AdFeed\AdFeed.csproj", "{C05C7A13-DAFC-41D0-9868-DB2F2C270CDD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C05C7A13-DAFC-41D0-9868-DB2F2C270CDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C05C7A13-DAFC-41D0-9868-DB2F2C270CDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C05C7A13-DAFC-41D0-9868-DB2F2C270CDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C05C7A13-DAFC-41D0-9868-DB2F2C270CDD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E85C9A9E-6850-49C0-A755-42965D1F3106}
+	EndGlobalSection
+EndGlobal
