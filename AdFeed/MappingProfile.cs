@@ -11,6 +11,8 @@ namespace AdFeed
         {
             AdCreateModelToAdMap();
             AdToAdModelMap();
+            CommentToCommentModelMap();
+            CommentCreateModelToCommentMap();
         }
 
         public void AdCreateModelToAdMap()
@@ -25,6 +27,18 @@ namespace AdFeed
         {
             CreateMap<Ad, AdModel>()
                 .ForMember(to => to.Category, from => from.MapFrom(p => p.Category.Name));
+        }
+
+        public void CommentToCommentModelMap()
+        {
+            CreateMap<Comment, CommentModel>()
+                .ForMember(to => to.Author, from => from.MapFrom(p => p.Author.UserName));
+        }
+
+        public void CommentCreateModelToCommentMap()
+        {
+            CreateMap<CommentCreateModel, Comment>()
+                .ForMember(to => to.Date, from => from.MapFrom(p => DateTime.Now));
         }
     }
 }

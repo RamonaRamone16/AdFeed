@@ -26,10 +26,10 @@ namespace AdFeed.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(AdFilterModel model)
         {
-            List<AdModel> models = _adService.GetAllAds();
-            return View(models);
+            model.Ads = _adService.GetAllAds(model);
+            return View(model);
         }
 
         [HttpGet]
@@ -52,12 +52,20 @@ namespace AdFeed.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult> GetUserAds()
+        public async Task<ActionResult> GetUserAds(AdFilterModel model)
         {
             User user = await _userManager.GetUserAsync(User);
-            List<AdModel> models = _adService.GetAdsByUserId(user.Id);
+            model.Ads = _adService.GetAdsByUserId(model, user.Id);
 
-            return View("Index", models);
+            return View("Index", model);
+        }
+
+        [HttpGet]
+        public ActionResult Details(int id)
+        {
+            AdModel model = _adService.GetAdById(id);
+
+            return View(model);
         }
     }
 }

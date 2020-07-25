@@ -1,16 +1,14 @@
 ﻿using AdFeed.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AdFeed.Services.Ads
 {
     public interface IAdService
     {
-        List<AdModel> GetAllAds();
+        List<AdModel> GetAllAds(AdFilterModel model);
         AdCreateModel GetAdCreateModel();
         void CreateAd(AdCreateModel model, int userId);
-        List<AdModel> GetAdsByUserId(int id);
+        List<AdModel> GetAdsByUserId(AdFilterModel model, int id);
+        AdModel GetAdById(int adId);
     }
 }

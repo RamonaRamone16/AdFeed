@@ -17,6 +17,7 @@ using AdFeed.DAL;
 using AdFeed.DAL.Entities;
 using AutoMapper;
 using AdFeed.Services.Ads;
+using AdFeed.Services.Comments;
 
 namespace AdFeed
 {
@@ -50,6 +51,7 @@ namespace AdFeed
             services.AddSingleton<IUnitOfWorkFactory, UnitOfWorkFactory>();
 
             services.AddSingleton<IAdService, AdService>();
+            services.AddSingleton<ICommentService, CommentService>();
 
             Mapper.Initialize(c => c.AddProfile(new MappingProfile()));
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)

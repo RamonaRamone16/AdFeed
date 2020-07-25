@@ -1,5 +1,8 @@
 ﻿using AdFeed.DAL.Entities;
 using AdFeed.DAL.Repositories.Contracts;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AdFeed.DAL.Repositories
 {
@@ -8,6 +11,11 @@ namespace AdFeed.DAL.Repositories
         public CommentRepository(ApplicationDbContext context) : base(context)
         {
             entities = context.Comments;
+        }
+
+        public IEnumerable<Comment> GetAllByAdId(int adId)
+        {
+            return entities.Include(x => x.Author).Where(x => x.AdId == adId);
         }
     }
 }

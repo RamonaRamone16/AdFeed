@@ -1,0 +1,13 @@
+﻿@model List<CommentModel>
+
+@foreach (var item in Model)
+{
+    <div class="text-center mt-3 mb-3">
+        <div class="d-flex justify-content-between">
+            <p style="font-size: 15px" class="d-inline">@item.Author</p>
+            <p style="font-size: 15px" class="d-inline">@item.Date</p>
+        </div>
+        <p> @item.Content</p>
+    </div>
+    <hr />
+}

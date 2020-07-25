@@ -22,21 +22,47 @@ namespace AdFeed.Services.Ads
             _unitOfWorkFactory = unitOfWorkFactory;
         }
 
-        public List<AdModel> GetAllAds()
+        public List<AdModel> GetAllAds(AdFilterModel model)
         {
             using (var unitOfWork = _unitOfWorkFactory.Create())
             {
-                List<Ad> ads = unitOfWork.Ads.GetAllWithCategoryAndImages().ToList();
+                List<Ad> ads = unitOfWork.Ads.GetAllWithCategoryAndImages()
+                    .ByKeyWord(model.KeyWord)
+                    .ByCategory(model.CategoryId)
+                    .ByPriceFrom(model.PriceFrom)
+                    .ByPriceTo(model.PriceTo)
+                    .ByImages(model.OnlyWithImages)
+                    .ToList();
+
+                model.CategorySelect = GetCategorySelect();
+
                 return Mapper.Map<List<AdModel>>(ads);
             }
         }
 
-        public List<AdModel> GetAdsByUserId(int userId)
+        public List<AdModel> GetAdsByUserId(AdFilterModel model, int userId)
         {
             using (var unitOfWork = _unitOfWorkFactory.Create())
             {
-                List<Ad> ads = unitOfWork.Ads.GetAllByUserId(userId).ToList();
+                List<Ad> ads = unitOfWork.Ads.GetAllByUserId(userId)
+                    .ByKeyWord(model.KeyWord)
+                    .ByCategory(model.CategoryId)
+                    .ByPriceFrom(model.PriceFrom)
+                    .ByPriceTo(model.PriceTo)
+                    .ByImages(model.OnlyWithImages)
+                    .ToList();
+                model.CategorySelect = GetCategorySelect();
+
                 return Mapper.Map<List<AdModel>>(ads); 
+            }
+        }
+
+        public AdModel GetAdById(int adId)
+        {
+            using (var unitOfWork = _unitOfWorkFactory.Create())
+            {
+                Ad ad = unitOfWork.Ads.GetAllWithCategoryAndImages().First(x => x.Id == adId);
+                return Mapper.Map<AdModel>(ad);
             }
         }
 
@@ -83,6 +109,15 @@ namespace AdFeed.Services.Ads
             using (var binaryReader = new BinaryReader(formFile.OpenReadStream()))
             {
                 return binaryReader.ReadBytes((int)formFile.Length);
+            }
+        }
+
+        private SelectList GetCategorySelect()
+        {
+            using (var unitOfWork = _unitOfWorkFactory.Create())
+            {
+                List<Category> categories = unitOfWork.Categories.GetAll().ToList();
+                return new SelectList(categories, nameof(Category.Id), nameof(Category.Name));
             }
         }
     }
