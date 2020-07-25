@@ -8,10 +8,14 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
-using AdFeed.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using AdFeed.DAL.EntitiesConfigurations.Contracts;
+using AdFeed.DAL.EntitiesConfigurations;
+using AdFeed.DAL;
+using AdFeed.DAL.Entities;
+using AutoMapper;
 
 namespace AdFeed
 {
@@ -27,10 +31,25 @@ namespace AdFeed
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            string connectionString = Configuration.GetConnectionString("MainConnection");
+            var optionBuilder = new DbContextOptionsBuilder();
+            optionBuilder.UseSqlServer(connectionString);
+
+            services.AddScoped<IEntityConfigurationContainer>(sp => new EntityConfigurationContainer());
+
+            services.AddDbContext<ApplicationDbContext>(builder =>
+            {
+                builder.UseSqlServer(connectionString);
+            }
+            );
+
+            services.AddSingleton<IApplicationDbContextFactory>(
+                sp => new ApplicationDbContextFactory(optionBuilder.Options, new EntityConfigurationContainer()));
+
+            services.AddSingleton<IUnitOfWorkFactory, UnitOfWorkFactory>();
+
+            Mapper.Initialize(c => c.AddProfile(new MappingProfile()));
+            services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();

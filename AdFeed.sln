@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdFeed", "AdFeed\AdFeed.csproj", "{C05C7A13-DAFC-41D0-9868-DB2F2C270CDD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdFeed.DAL", "AdFeed.DAL\AdFeed.DAL.csproj", "{E602CA16-7D48-4BDF-B46E-DB98B97C3E88}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{C05C7A13-DAFC-41D0-9868-DB2F2C270CDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C05C7A13-DAFC-41D0-9868-DB2F2C270CDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C05C7A13-DAFC-41D0-9868-DB2F2C270CDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E602CA16-7D48-4BDF-B46E-DB98B97C3E88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E602CA16-7D48-4BDF-B46E-DB98B97C3E88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E602CA16-7D48-4BDF-B46E-DB98B97C3E88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E602CA16-7D48-4BDF-B46E-DB98B97C3E88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
