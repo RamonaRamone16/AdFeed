@@ -12,6 +12,10 @@ namespace AdFeed.DAL
     {
         public readonly IEntityConfigurationContainer _entityConfigurationContainer;
 
+        public DbSet<Ad> Ads { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Image> Images { get; set; }
 
         public ApplicationDbContext(
             DbContextOptions options,
@@ -24,6 +28,11 @@ namespace AdFeed.DAL
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity(_entityConfigurationContainer.AdConfiguration.ProvideConfigurationAction());
+            builder.Entity(_entityConfigurationContainer.CategoryConfiguration.ProvideConfigurationAction());
+            builder.Entity(_entityConfigurationContainer.CommentConfiguration.ProvideConfigurationAction());
+            builder.Entity(_entityConfigurationContainer.ImageConfiguration.ProvideConfigurationAction());
         }
     }
 }

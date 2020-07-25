@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using AdFeed.DAL.Repositories;
+using AdFeed.DAL.Repositories.Contracts;
+using System;
 
 namespace AdFeed.DAL
 {
@@ -10,9 +10,19 @@ namespace AdFeed.DAL
 
         private bool disposed;
 
+        public IAdRepository Ads { get; }
+        public ICategoryRepository Categories { get; }
+        public ICommentRepository Comments { get; }
+        public IImageRepository Images { get; }
+
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
+
+            Ads = new AdRepository(context);
+            Categories = new CategoryRepository(context);
+            Comments = new CommentRepository(context);
+            Images = new ImageRepository(context);
         }
 
         public void Dispose()
