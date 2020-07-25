@@ -25,7 +25,7 @@ namespace AdFeed.Services.Ads
         public static IEnumerable<Ad> ByImages(this IEnumerable<Ad> products, bool onlyWithImages)
         {
             if (onlyWithImages)
-                return products.Where(x => x.Images.Count>0);
+                return products.Where(x => x.Images!=null && x.Images.Count > 0);
             return products;
         }
 
