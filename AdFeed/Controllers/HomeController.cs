@@ -20,7 +20,7 @@ namespace AdFeed.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Ad");
         }
 
         public IActionResult Privacy()

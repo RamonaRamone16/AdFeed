@@ -1,0 +1,21 @@
+﻿@model IEnumerable<AdFeed.Models.AdModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+    <div>
+        @foreach (var item in Model)
+        {
+            @if (item.Images.Count > 0)
+            {
+                <img style="width: 20%; height: 20%" src="data:image/jpeg;base64,@(Convert.ToBase64String(item.Images.First().Picture))" />
+            }
+            <p>@item.Title</p>
+            <p>@item.Description</p>
+            <p>@item.Price</p>
+            <p>@item.Category</p>
+            <p>@item.PhoneNumber</p>
+        }
+    </div>
+
+

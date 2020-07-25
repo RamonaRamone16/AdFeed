@@ -16,6 +16,7 @@ using AdFeed.DAL.EntitiesConfigurations;
 using AdFeed.DAL;
 using AdFeed.DAL.Entities;
 using AutoMapper;
+using AdFeed.Services.Ads;
 
 namespace AdFeed
 {
@@ -47,6 +48,8 @@ namespace AdFeed
                 sp => new ApplicationDbContextFactory(optionBuilder.Options, new EntityConfigurationContainer()));
 
             services.AddSingleton<IUnitOfWorkFactory, UnitOfWorkFactory>();
+
+            services.AddSingleton<IAdService, AdService>();
 
             Mapper.Initialize(c => c.AddProfile(new MappingProfile()));
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
